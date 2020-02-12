@@ -1,0 +1,7 @@
+torch>=0.4
+git+git://github.com/clic-lab/newsroom.git#egg=newsroom
+tqdm
+pyrouge
+tensorflow
+nltk
+spacy

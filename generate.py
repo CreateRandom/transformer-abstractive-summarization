@@ -16,14 +16,14 @@ def generate_outputs(model, pad_output, mask_output, text_encoder, device, beam,
     src_strs, tgt_strs, gen_strs = [], [], []
     mask = mask_output
     outputs = model(pad_output, mask_output, text_encoder, device, beam=beam, gen_len=gen_len, k=k, decoding_strategy=decoding_strategy, generate=True, min_len=min_len)
-    for generated_toks, input_toks, target_toks in outputs:
-        for idx in range(generated_toks.size(0)):
-            src_str = toks_to_str(input_toks[idx], text_encoder, is_input=True, mask=mask[idx])
-            src_strs.append(src_str)
-            tgt_str = toks_to_str(target_toks[idx], text_encoder)
-            tgt_strs.append(tgt_str)
-            gen_str = toks_to_str(generated_toks[idx], text_encoder)
-            gen_strs.append(gen_str)
+    generated_toks, input_toks, target_toks = outputs
+    for idx in range(generated_toks.size(0)):
+        src_str = toks_to_str(input_toks[idx], text_encoder, is_input=True, mask=mask[idx])
+        src_strs.append(src_str)
+        tgt_str = toks_to_str(target_toks[idx], text_encoder)
+        tgt_strs.append(tgt_str)
+        gen_str = toks_to_str(generated_toks[idx], text_encoder)
+        gen_strs.append(gen_str)
     return src_strs, tgt_strs, gen_strs
 
 def toks_to_str(toks, text_encoder, is_input=False, mask=None):

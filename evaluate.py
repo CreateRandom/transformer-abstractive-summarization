@@ -50,6 +50,7 @@ def evaluate_model(model, val_loader, text_encoder, device, beam, gen_len, k, de
             data["tgt"].extend(tgt_strs)
 
     for i in range(len(data["src"])):
+        print(format_text(data["tgt"][i], max_len, stop_words))
         with open(os.path.join(gen_dir, "gen.{}.txt".format(i)), "w") as gen_file:
             gen_file.write(format_text(data["gen"][i], max_len, stop_words))
         with open(os.path.join(tgt_dir, "tgt.{}.txt".format(i)), "w") as tgt_file:

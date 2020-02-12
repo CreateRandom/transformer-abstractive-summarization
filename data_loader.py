@@ -5,12 +5,12 @@ from torch.utils.data import Dataset, DataLoader
 from newsroom import jsonl
 
 class CustomDataset(Dataset):
-    def __init__(self, data_file, encoder, max_size=None, subset=None):
+    def __init__(self, data_file, encoder, max_size=None, subset=None, shuffle=True):
         with jsonl.open(data_file, gzip=True) as f:
             self.data = f.read()
         if subset is not None:
             self.data = [x for x in self.data if x["density_bin"] == subset]
-        random.shuffle(self.data)
+        if shuffle: random.shuffle(self.data)
         if max_size is not None:
             self.data = self.data[:max_size]
         self.encoder = encoder
@@ -46,5 +46,5 @@ class CustomDataset(Dataset):
         return len(self.data)
 
 def get_loader(data_file, batch_size, encoder, shuffle=True, num_workers=0, max_size=None, subset=None):
-    dataset = CustomDataset(data_file, encoder, max_size=max_size, subset=subset)
+    dataset = CustomDataset(data_file, encoder, max_size=max_size, subset=subset, shuffle=shuffle)
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers, drop_last=True)
